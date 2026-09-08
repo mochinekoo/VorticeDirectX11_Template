@@ -9,18 +9,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Vortice.Wpf;
+using VorticeDirectX_Sample;
+using VorticeDirectX_Sample.Manager;
 
 namespace VorticeDirectX11_Template
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
-    {
-        public Render DrawRender { get; private set; } = new Render();
+    public partial class MainWindow : Window {
+        public static Render MainRender { get; private set; } = new Render();
 
-        public MainWindow()
-        {
+        public MainWindow() {
             InitializeComponent();
 
             ViewSurface.LoadContent += LoadViewSurface;
@@ -28,19 +28,16 @@ namespace VorticeDirectX11_Template
             ViewSurface.UnloadContent += UnLoadViewSurface;
         }
 
-        public void LoadViewSurface(object? sender, DrawingSurfaceEventArgs e)
-        {
-            DrawRender.Init(e);
+        public void LoadViewSurface(object? sender, DrawingSurfaceEventArgs e) {
+            MainRender.Init(e);
         }
 
-        public void DrawViewSurface(object? sender, DrawEventArgs e)
-        {
-            DrawRender.Draw(e);
+        public void DrawViewSurface(object? sender, DrawEventArgs e) {
+            MainRender.Draw(e);
         }
 
-        public void UnLoadViewSurface(object? sender, DrawingSurfaceEventArgs e)
-        {
-            DrawRender.Release(e);
+        public void UnLoadViewSurface(object? sender, DrawingSurfaceEventArgs e) {
+
         }
     }
 }
