@@ -15,7 +15,7 @@ namespace VorticeDirectX_Sample.Scene {
         private Box Box_;
 
         public DebugScene() : base("DebugScene") {
-            Box_ = new Box();
+            Box_ = new Box(100.0f, 100.0f);
         }
 
         public override void Init() {

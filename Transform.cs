@@ -19,7 +19,7 @@ namespace VorticeDirectX11_Template {
             scale_ = new Double3(1, 1, 1);
         }
 
-        Matrix4x4 GetWorldMatrix() {
+        public Matrix4x4 GetWorldMatrix() {
             Matrix4x4 scale = Matrix4x4.CreateScale((float) scale_.X, (float)scale_.Y, (float)scale_.Z);
             Matrix4x4 rotation = Matrix4x4.CreateFromYawPitchRoll((float)rotation_.Y, (float)rotation_.X, (float)rotation_.Z);
             Matrix4x4 translation = Matrix4x4.CreateTranslation((float)location_.X, (float)location_.Y, (float)location_.Z);

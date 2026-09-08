@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Media.Effects;
@@ -33,19 +34,36 @@ namespace VorticeDirectX_Sample.Manager {
 
         [StructLayout(LayoutKind.Sequential)]
         public struct Vertex {
-            public float X;
-            public float Y;
-            public float Z;
+            public Vector3 Location;
             public Color4 Color;
 
-            public Vertex(float x, float y, float z, Color4 color) {
-                X = x;
-                Y = y;
-                Z = z;
+            public Vertex(Vector3 location, Color4 color) {
+                Location = location;
                 Color = color;
             }
 
-            public const uint SizeInBytes = 28;
+            public Vertex(float x, float y, float z, Color4 color) {
+                Location.X = x;
+                Location.Y = y;
+                Location.Z = z;
+                Color = color;
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct ConstantBuffer {
+            public Matrix4x4 wvpMatrix_ = Matrix4x4.Identity;
+            public Double3 diffuse_ = new Double3();
+            public Double3 ambient_ = new Double3();
+            public Double3 specular_ = new Double3();
+            public Double3 emission_ = new Double3();
+            public float shininess_ = 0.0f;
+            public int hasTexture_ = 0;
+            public Double3 lightDirection_ = new Double3();
+            public int enableGray_ = 0;
+
+            public ConstantBuffer() {
+            }
         }
 
         /// シェーダー

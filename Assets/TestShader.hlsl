@@ -1,3 +1,16 @@
+cbuffer ConstantBuffer : register(b0)
+{
+    matrix wvpMatrix;
+    float4 diffuse;
+    float4 ambient;
+    float4 specular;
+    float3 emission;
+    float shininess;
+    int hasTexture;
+    float3 lightDirection;
+    int enableGray;
+};
+
 struct VSInput {
     float3 POSTION : POSTION;
     float4 COLOR : COLOR;
@@ -10,7 +23,7 @@ struct VSOutput {
 
 VSOutput VSMain(VSInput input) {
     VSOutput output;
-    output.POSTION = float4(input.POSTION, 1.0f);
+    output.POSTION = mul(float4(input.POSTION, 1.0f), wvpMatrix);
     output.COLOR = input.COLOR;
     return output;
 }
