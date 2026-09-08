@@ -5,61 +5,25 @@ using System.Text;
 using System.Windows.Media.Effects;
 using Vortice.Direct3D11;
 using Vortice.Mathematics;
+using VorticeDirectX11_Template;
 using static VorticeDirectX_Sample.Manager.DX3D;
+using Box = VorticeDirectX11_Template.Box;
 
 namespace VorticeDirectX_Sample.Scene {
     internal class DebugScene : BaseScene {
 
-        private ID3D11Buffer vertexBuffer;
+        private Box Box_;
 
         public DebugScene() : base("DebugScene") {
-            
+            Box_ = new Box();
         }
 
         public override void Init() {
-            InitVertexBuffer();
-        }
-
-        public void InitVertexBuffer() {
-            Vertex[] vertices = [
-                new Vertex(0.0f, 0.0f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f)),
-                new Vertex(0.0f, 0.5f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f)),
-                new Vertex(0.5f, 0.0f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f)),
-
-                new Vertex(0.5f, 0.0f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f)),
-                new Vertex(0.0f, 0.5f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f)),
-                new Vertex(0.5f, 0.5f, 0.0f, new Color4(1.0f, 0.0f, 0.0f, 1.0f))
-                ];
-            int size = Marshal.SizeOf<Vertex>() * vertices.Length;
-
-            BufferDescription bufferDescription =
-                new BufferDescription {
-                    Usage = ResourceUsage.Default,
-                    ByteWidth = (uint)size,
-                    BindFlags = BindFlags.VertexBuffer,
-                    CPUAccessFlags = CpuAccessFlags.None,
-                    MiscFlags = ResourceOptionFlags.None,
-                    StructureByteStride = 0
-                };
-
-
-            GCHandle handle = GCHandle.Alloc(vertices, GCHandleType.Pinned);
-
-            try {
-                IntPtr pointer = handle.AddrOfPinnedObject();
-
-                unsafe {
-                    SubresourceData subresourceData = new SubresourceData(pointer.ToPointer());
-
-                    vertexBuffer = Render.DX3D.DXDevice.CreateBuffer(bufferDescription, subresourceData);
-                }
-            } finally {
-                handle.Free();
-            }
+            Box_.Init();
         }
 
         public override void Update() {
-            
+            Box_.Update();
         }
 
         public override void Draw() {
@@ -67,10 +31,9 @@ namespace VorticeDirectX_Sample.Scene {
             Render.DX3D.DXContext.IASetPrimitiveTopology(Vortice.Direct3D.PrimitiveTopology.TriangleList);
             Render.DX3D.DXContext.IASetInputLayout(Render.DX3D.InputLayout);
             Render.DX3D.DXContext.VSSetShader(Render.DX3D.VetexShader);
-            Render.DX3D.DXContext.IASetVertexBuffer(0, vertexBuffer, Vertex.SizeInBytes);
             Render.DX3D.DXContext.PSSetShader(Render.DX3D.PixelShader);
 
-            Render.DX3D.DXContext.Draw(6, 0);
+            Box_.Draw();
 
             Render.DX3D.DXContext.RSSetState(null);
         }
